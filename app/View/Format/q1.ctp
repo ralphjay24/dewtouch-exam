@@ -2,14 +2,28 @@
 <div id="message1">
 
 
-<?php echo $this->Form->create('Type',array('id'=>'form_type','type'=>'file','class'=>'','method'=>'POST','autocomplete'=>'off','inputDefaults'=>array(
-				
-				'label'=>false,'div'=>false,'type'=>'text','required'=>false)))?>
-	
+<?php
+	echo $this->Form->create('Type',[
+		'id'=>'form_type',
+		'type'=>'file',
+		'class'=>'',
+		'method'=>'POST',
+		'autocomplete'=>'off',
+		'inputDefaults'=>[
+			'label'=>false,
+			'div'=>false,
+			'type'=>'text',
+			'required'=>false
+		],
+		'target' => '_blank',
+	])
+?>
+
 <?php echo __("Hi, please choose a type below:")?>
 <br><br>
 
-<?php $options_new = array(
+<?php
+	$options_new = array(
  		'Type1' => __('<span class="showDialog" data-id="dialog_1" style="color:blue">Type1</span><div id="dialog_1" class="hide dialog" title="Type 1">
  				<span style="display:inline-block"><ul><li>Description .......</li>
  				<li>Description 2</li></ul></span>
@@ -18,10 +32,12 @@
  				<span style="display:inline-block"><ul><li>Desc 1 .....</li>
  				<li>Desc 2...</li></ul></span>
  				</div>')
-		);?>
+		);
 
-<?php echo $this->Form->input('type', array('legend'=>false, 'type' => 'radio', 'options'=>$options_new,'before'=>'<label class="radio line notcheck">','after'=>'</label>' ,'separator'=>'</label><label class="radio line notcheck">'));?>
+	echo $this->Form->input('type', array('legend'=>false, 'type' => 'radio', 'options'=>$options_new,'before'=>'<label class="radio line notcheck">','after'=>'</label>' ,'separator'=>'</label><label class="radio line notcheck">'));
 
+?>
+	<button type="submit" class="btn btn-success" style='display:none' id='save-btn'>Save</button>
 
 <?php echo $this->Form->end();?>
 
@@ -58,8 +74,17 @@ $(document).ready(function(){
 		dialogClass: 'ui-dialog-blue'
 	});
 
-	
-	$(".showDialog").click(function(){ var id = $(this).data('id'); $("#"+id).dialog('open'); });
+
+	$(".showDialog").mouseover(function(event) {
+		event.preventDefault();
+		var id = $(this).data('id');
+		$(this).parent().children('input[type="radio"]').prop('checked', true);
+		$("#" + id).dialog('open');
+
+		$("#" + id).on('dialogclose', function(e) {
+			$("#save-btn").show();
+		});
+	});
 
 })
 

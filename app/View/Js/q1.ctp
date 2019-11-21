@@ -1,3 +1,8 @@
+<style>
+.table td {
+	width: 20%;
+}
+</style>
 <div class="alert  ">
 <button class="close" data-dismiss="alert"></button>
 Question: Advanced Input Field</div>
@@ -31,13 +36,21 @@ The table you start with</div>
 </thead>
 
 <tbody>
-	<tr>
-	<td></td>
-	<td><textarea name="data[1][description]" class="m-wrap  description required" rows="2" ></textarea></td>
-	<td><input name="data[1][quantity]" class=""></td>
-	<td><input name="data[1][unit_price]"  class=""></td>
-	
-</tr>
+	<tr style="height: 50px;">
+		<td></td>
+		<td class="edit">
+			<span class="display t-description"></span>
+			<textarea name="data[1][description]" class="input input-description" rows="2" style="display: none;"></textarea>
+		</td>
+		<td class="edit">
+			<span class="display t-quantity"></span>
+			<input name="data[1][quantity]" class="input input-quantity" style="display: none;">
+		</td>
+		<td class="edit">
+			<span class="display t-unit-price"></span>
+			<input name="data[1][unit_price]" class="input input-unit-price" style="display: none;">
+		</td>
+	</tr>
 
 </tbody>
 
@@ -64,15 +77,59 @@ Your browser does not support the video tag.
 <script>
 $(document).ready(function(){
 
-	$("#add_item_button").click(function(){
+	var editClick = function() {
+		if ($(this).hasClass('on')) {
+			var val = $(this).children('.input').val();
+			$(this).children('.input').hide();
+			$(this).children('.display').text(val).show();
+			$(this).removeClass('on');
+		} else {
+			var val = $(this).children('.display').html();
+			$(this).addClass('on');
+			$(this).children('.display').hide();
+			$(this).children('.input').show().focus().val(val);
+		}
 
+	}
 
-		alert("suppose to add a new row");
-		
+	$(".edit").click(editClick);
+	$("body").click(function(e) {
+		if ($(e.target).hasClass('edit')) {
+			return;
+		}
 
+		$(this).find('.edit.on').each(function(i, v) {
+			var val = $(this).children('.input').val();
+			$(this).children('.input').hide();
+			$(this).children('.display').text(val).show();
+			$(this).removeClass('on');
 		});
+	});
 
-	
+	$("#add_item_button").click(function() {
+		var rowId = $(".table").find("tr").length + 1;
+		$('.table').append('\
+			<tr style="height: 50px;"> \
+				<td></td> \
+				<td class="edit"> \
+					<span class="display t-description"></span> \
+					<textarea name="data[' + rowId + '][description]" class="input input-description" rows="2" style="display: none;"></textarea> \
+				</td> \
+				<td class="edit"> \
+					<span class="display t-quantity"></span> \
+					<input name="data[' + rowId + '][quantity]" class="input input-quantity" style="display: none;"> \
+				</td> \
+				<td class="edit"> \
+					<span class="display t-unit-price"></span> \
+					<input name="data[' + rowId + '][unit_price]" class="input input-unit-price" style="display: none;"> \
+				</td> \
+			</tr> \
+		');
+
+		$(".edit").click(editClick);
+	});
+
+
 });
 </script>
 <?php $this->end();?>
