@@ -17,7 +17,7 @@
 					</ul>
 
 					<div class="tab-content">
-						
+
 						<div class="tab-pane row-fluid active" id="tab_item">
 
 							<div class="row-fluid">
@@ -29,30 +29,53 @@
 										</tr>
 									</thead>
 									<tbody>
-									<?php foreach($order_reports as $k => $order_report):?>
+									<?php foreach($order_reports as $order_name => $order_report):?>
 										<tr class="item_tr" style="background-color:#fff;">
 											<td><span class="row-details row-details-close"></span></td>
-											<td colspan="2"><?php echo $k?></td>
+											<td colspan="2"><?php echo $order_name?></td>
 										</tr>
 										<tr class="hide">
 											<td></td>
 											<td colspan="2">
-												<table style="width:100%">
+												<table style="width:100%" class="table table-bordered dataTable">
 													<thead>
 														<tr>
-															<th style="border-left:none;width:50%">Part Name</th>
-															<th>Value</th>
+															<th style="width:50%">Dish</th>
+															<th>Quantity</th>
 														</tr>
 													</thead>
 													<tbody>
-													<?php foreach($order_report as $q => $val):?>
+													<?php foreach($order_report['dish'] as $q => $dish):?>
 														<tr>
-															<td style="border-left:none;width:50%"><?php echo $q?></td>
-															<td><?php echo $val?></td>
+															<td style="width:50%"><?php echo $dish['name']; ?></td>
+															<td><?php echo $dish['quantity']; ?></td>
 														</tr>
 													<?php endforeach;?>
 													</tbody>
 												</table>
+												<br><br>
+												<?php foreach($order_report['ingredients'] as $ingredients): ?>
+												<table style="width:100%" class="table table-bordered dataTable">
+													<thead>
+														<tr>
+															<th style="width:50%" colspan="2"><?php echo $ingredients['title']; ?></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th style="width:50%">Name</th>
+															<th>Value</th>
+														</tr>
+													<?php foreach($ingredients['ingredient_name'] as $q => $ingr): ?>
+														<tr>
+															<td style="width:50%"><?php echo $ingr['name']; ?></td>
+															<td><?php echo $ingr['value']; ?></td>
+														</tr>
+													<?php endforeach;?>
+													</tbody>
+												</table>
+												<br>
+												<?php endforeach;?>
 											</td>
 										</tr>
 									<?php endforeach;?>
@@ -72,7 +95,7 @@
 <?php $this->start('script_own')?>
 <script>
 $(document).ready(function(){
-	
+
 	$("body").on('click','tbody tr.item_tr',function(){
 
 	  	if($(this).next().hasClass("hide")) {
@@ -85,7 +108,7 @@ $(document).ready(function(){
 
 	  return false;
 	 });
-	
+
 })
 </script>
 <?php $this->end()?>
