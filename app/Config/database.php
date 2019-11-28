@@ -71,7 +71,7 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' 		 => 'localhost:3306',
+		'host'       => 'localhost',
 		'login'      => 'root',
 		'password'   => '',
 		'database'   => 'dewtouch_db',
